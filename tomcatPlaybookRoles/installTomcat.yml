@@ -1,0 +1,27 @@
+---
+
+- hosts: webservers
+  become: yes
+  become_user: root
+  tasks:
+
+- name: Install java
+  hosts: webservers
+  tasks:
+  roles:
+     - java
+- name: Create tomcat user
+  hosts: webservers
+  tasks:
+  roles:
+     - tomcatuser
+- name: Install tomcat
+  hosts: webservers
+  tasks:
+  roles:
+     - tomcat
+- name: Do firewall settings
+  hosts: webservers
+  tasks:
+  roles:
+     - firewall

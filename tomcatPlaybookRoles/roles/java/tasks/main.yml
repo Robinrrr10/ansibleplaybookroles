@@ -1,0 +1,10 @@
+---
+# If need we can have jdk-8u211-linux-x64.rpm in files and can use this
+#- name: "Copy java rpm to server"
+#  copy: src=jdk-8u211-linux-x64.rpm dest=/home/jdk-8u211-linux-x64.rpm
+
+#- name: "Install java"
+#  yum: name=/home/jdk-8u211-linux-x64.rpm state=present
+
+- name: Install jd 1.8
+  yum: name=java-1.8.0-openjdk state=installed

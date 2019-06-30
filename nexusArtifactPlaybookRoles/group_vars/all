@@ -1,0 +1,5 @@
+
+nexusserviceuser: nexus
+nexusservicegroup: nexus
+nexusportnumber: 8081
+nexuslocaltarpath: /home/files/nexus-3.17.0-01-unix.tar.gz

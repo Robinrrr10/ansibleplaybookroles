@@ -1,0 +1,14 @@
+[Unit]
+Description=Sonatype Nexus Artifact
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/{{ nexusserviceuser }}/bin/nexus start
+ExecStop=/home/{{ nexusserviceuser }}/bin/nexus stop
+RemainAfterExit=yes
+User={{ nexusserviceuser }}
+Group={{ nexusserviceuser }}
+
+[Install]
+WantedBy=multi-user.target

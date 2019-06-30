@@ -1,0 +1,4 @@
+
+tomcatuser: ansibletomcat
+tomcatgroup: ansibletomcat
+tomcatport: 8080

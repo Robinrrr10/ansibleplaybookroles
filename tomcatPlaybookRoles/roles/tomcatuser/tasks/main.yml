@@ -1,0 +1,12 @@
+---
+- name: Create tomcat group
+  group:
+    name={{ tomcatgroup }}
+    state=present
+
+- name: Create user
+  user:
+    name={{ tomcatuser }}
+    group={{ tomcatgroup }}
+    state=present
+    shell=/sbin/nologin

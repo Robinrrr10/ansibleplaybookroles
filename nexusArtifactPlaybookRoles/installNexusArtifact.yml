@@ -1,0 +1,31 @@
+#ansible-playbook installNexusArtifact.yml -i hosts
+---
+
+- hosts: nexusserver
+  become: yes
+  become_user: root
+  tasks:
+
+- name: Install java in nexusserver machine
+  hosts: nexusserver
+  tasks:
+  roles:
+     - java
+
+- name: Add user {{ nexusserviceuser }} for nexus service
+  hosts: nexusserver
+  tasks:
+  roles:
+     - nexususer
+
+- name: Install nexus in servers
+  hosts: nexusserver
+  tasks:
+  roles:
+     - nexus
+
+- name: Modify firewall settings
+  hosts: nexusserver
+  tasks:
+  roles:
+     - firewall

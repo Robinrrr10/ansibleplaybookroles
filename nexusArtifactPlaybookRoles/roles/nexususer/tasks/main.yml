@@ -1,0 +1,11 @@
+---
+- name: Create nexus user group {{ nexusservicegroup }}
+  group:
+    name={{ nexusservicegroup }}
+    state=present
+
+- name: Create nexus user {{ nexusserviceuser }}
+  user:
+    name={{ nexusserviceuser }}
+    group={{ nexusservicegroup }}
+    state=present

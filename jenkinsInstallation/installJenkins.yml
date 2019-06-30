@@ -1,0 +1,44 @@
+# ansible-playbook installJenkins.yml -i hosts
+---
+
+- hosts: jenkinsserver
+  become: yes
+  become_user: root
+  tasks:
+
+
+- name: Install java
+  hosts: jenkinsserver
+  tasks:
+  roles:
+     - javajdk
+
+- name: Install jenkins
+  hosts: jenkinsserver
+  tasks:
+  roles:
+     - jenkinsci
+
+- name: Open firewall port
+  hosts: jenkinsserver
+  tasks:
+  roles:
+     - firewall
+
+- name: Install Git
+  hosts: jenkinsserver
+  tasks:
+  roles:
+     - gitrepo
+
+- name: Installal maven
+  hosts: jenkinsserver
+  tasks:
+  roles:
+     - maven
+
+- name: Add environment variables
+  hosts: jenkinsserver
+  tasks:
+  roles:
+     - envir

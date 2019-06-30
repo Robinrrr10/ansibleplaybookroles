@@ -1,0 +1,19 @@
+---
+ - name: Download jenkins.repo file
+   get_url:
+      url=http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+      dest=/etc/yum.repos.d/
+ 
+ - name: Add rpm import of jenkins ci
+   command: rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+ - name: Install jenkins
+   yum:
+     name=jenkins
+     state=installed
+
+ - name: Start jenkins
+   service:
+     name=jenkins
+     state=started
+     enabled=yes

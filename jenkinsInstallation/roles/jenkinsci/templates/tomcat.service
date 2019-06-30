@@ -1,0 +1,14 @@
+[Unit]
+Description=Apache Tomcat 8
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/{{ tomcatuser }}/bin/startup.sh
+ExecStop=/home/{{ tomcatuser }}/bin/shutdown.sh
+RemainAfterExit=yes
+User={{ tomcatuser }}
+Group={{ tomcatgroup }}
+
+[Install]
+WantedBy=multi-user.target

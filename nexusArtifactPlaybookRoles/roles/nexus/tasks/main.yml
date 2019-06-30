@@ -1,0 +1,78 @@
+---
+# - name: Download nexus tar file from internet
+#   get_url:
+#      url=https://sonatype-download.global.ssl.fastly.net/nexus/3/nexus-3.17.0-01-unix.tar.gz
+#      dest=/home
+
+ - name: Copy nexus tar file from ansible server to nexus server
+   copy:
+     src={{ nexuslocaltarpath }}
+     dest=/home/nexus-3.17.0-01-unix.tar.gz
+
+# - name: untar tomcat
+#   command: tar -xzvf /home/apache-tomcat-8.5.42.tar.gz -C /home/
+
+ - name: untar nexus using unarchive
+   unarchive:
+       src: /home/nexus-3.17.0-01-unix.tar.gz
+       dest: /home/
+       remote_src: yes
+ 
+ - name: create directory for .install4j 
+   shell: mkdir /home/{{ nexusserviceuser }}/.install4j
+
+ - name: Copy all content from .install4j to service .install4j
+   shell: cp -r /home/nexus-3.17.0-01/.install4j/* /home/{{ nexusserviceuser }}/.install4j
+
+ - name: delete existing .install4j
+   shell: rm -rf /home/nexus-3.17.0-01/.install4j
+
+ - name: rename  extracted dir {{ nexusserviceuser }}
+   shell: mv /home/nexus-3.17.0-01/* /home/{{ nexusserviceuser }}
+
+ - name: Give permission for nexus file
+   file:
+     path=/home/{{ item }}
+     owner={{ nexusserviceuser }}
+     group={{ nexusservicegroup }}
+     mode=775
+     state=directory
+     recurse=yes
+   with_items:
+      - "{{ nexusserviceuser }}"
+      - sonatype-work
+
+ - name: Add user in nexus.rc
+   lineinfile:
+     path: /home/{{ nexusserviceuser }}/bin/nexus.rc
+     line: 'run_as_user="{{ nexusserviceuser }}"'
+     state: present
+
+ - name: Add nexus link
+   file:
+       src=/home/{{ nexusserviceuser }}/bin/nexus
+       dest=/etc/init.d/nexus
+       state=link
+       owner={{ nexusserviceuser }}
+       group={{ nexusservicegroup }}
+ 
+ - name: Give all permission for {{ nexusserviceuser }} by additing in visudo
+   lineinfile:
+       path: /etc/sudoers
+       line: '{{ nexusserviceuser }}   ALL=(ALL)       ALL'
+       state: present
+
+# - name: copy service file
+#   template:
+#       src=nexus.service
+#       dest=/usr/lib/systemd/system/{{ nexusserviceuser }}.service
+
+# - name: Give permission of service file
+#   file:
+#     path=/usr/lib/systemd/system/{{ nexusserviceuser }}.service
+#     owner={{ nexusserviceuser }}
+#     group={{ nexusservicegroup }}
+#     mode=0775
+
+ - name: Start nexus
+   command: service {{ nexusserviceuser }} start

@@ -1,0 +1,44 @@
+---
+ - name: Download tomcat
+   get_url:
+      url=https://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.42/bin/apache-tomcat-8.5.42.tar.gz
+      dest=/home
+
+# - name: untar tomcat
+#   command: tar -xzvf /home/apache-tomcat-8.5.42.tar.gz -C /home/
+
+ - name: untar tomcat using unarchive
+   unarchive:
+       src: /home/apache-tomcat-8.5.42.tar.gz
+       dest: /home/
+       remote_src: yes
+       
+ - name: copy all tomcat content to tomcatuser directory
+   shell: cp -r /home/apache-tomcat-8.5.42/* /home/{{ tomcatuser }}
+
+ - name: Give permission for tomcat user
+   file:
+     path=/home/{{ tomcatuser }}
+     owner={{ tomcatuser }}
+     group={{ tomcatgroup }}
+     mode=775
+     state=directory
+     recurse=yes
+
+ - name: copy service file
+   template:
+       src=tomcat.service
+       dest=/usr/lib/systemd/system/{{ tomcatuser }}.service
+
+ - name: Give permission of service file
+   file:
+     path=/usr/lib/systemd/system/{{ tomcatuser }}.service
+     owner={{ tomcatuser }}
+     group={{ tomcatgroup }}
+     mode=0775
+
+ - name: Stating tomcat
+   service:
+      name={{ tomcatuser }}
+      state=started
+      enabled=yes
