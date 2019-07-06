@@ -1,0 +1,21 @@
+---
+# Install other package which is need to install gitlab
+- name: "Install other packages needed to install gitlab"
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - curl
+    - policycoreutils-python
+    - openssh-server
+
+- name: "Install postfix"
+  yum:
+    name=postfix
+    state=present
+
+- name: "Start postfix"
+  service:
+    name=postfix
+    state=started
+    enabled=yes

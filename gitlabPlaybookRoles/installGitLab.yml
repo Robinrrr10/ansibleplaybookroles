@@ -1,0 +1,26 @@
+#ansible-playbook installGitLab.yml -i hosts
+#At least 4 GB ram is needed
+---
+
+- hosts: gitlabserver
+  become: yes
+  become_user: root
+  tasks:
+
+- name: Install other packages needed for installing gitlab
+  hosts: gitlabserver
+  tasks:
+  roles:
+     - otherpackages
+
+- name: Install gitlab-ce
+  hosts: gitlabserver
+  tasks:
+  roles:
+     - gitlab
+
+- name: Modify firewall settings
+  hosts: gitlabserver
+  tasks:
+  roles:
+     - firewall

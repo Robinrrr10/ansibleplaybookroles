@@ -1,0 +1,22 @@
+---
+
+- name: Open HTTP port
+  firewalld:
+        service=http
+        permanent=yes
+        state=enabled
+
+- name: Open HTTPS port
+  firewalld:
+        service=https
+        permanent=yes
+        state=enabled
+
+- name: Open SSH port
+  firewalld:
+        service=ssh
+        permanent=yes
+        state=enabled
+
+- name: Reload firewall
+  command: firewall-cmd --reload
